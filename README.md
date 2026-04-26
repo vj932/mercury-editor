@@ -19,7 +19,6 @@ Built with Electron, TipTap, and KaTeX.
 - **Tabs** — multiple documents in one window
 - **Page layout** — configurable page size, orientation, margins, columns
 - **Export** — PDF and LaTeX (.tex) export
-- **Dark mode** — follows system preference or manual toggle
 - **Native .merc file format** — double-click to open, auto-save
 
 ## Getting Started
@@ -74,19 +73,6 @@ Type LaTeX anywhere and press space to render:
 - `$$\int_0^1 f(x)\,dx$$` → display math
 
 **Math mode** (⌘E or ⌃E): toggles continuous LaTeX input. Everything you type stays as raw text until you press ⌘E/⌃E again, at which point it all renders as a single inline math expression.
-
-### Keyboard Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| ⌘E / ⌃E | Toggle math mode |
-| ⌘B | Bold |
-| ⌘I | Italic |
-| ⌘U | Underline |
-| ⌘K | Insert link |
-| ⌘S | Save |
-| ⌘⇧D | Insert drawing |
-| Tab | Insert tab |
 
 ### File Format
 

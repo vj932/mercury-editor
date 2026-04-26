@@ -1,6 +1,6 @@
 # Mercury
 
-A minimal, native math editor for macOS with inline LaTeX rendering. Write math as naturally as you would on paper — type LaTeX commands and they render in real-time as you type.
+A minimal, native math editor for macOS with inline LaTeX rendering. 
 
 Built with Electron, TipTap, and KaTeX.
 

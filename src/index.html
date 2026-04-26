@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mercury</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- macOS drag region -->
+  <div id="titlebar">
+    <!-- Shown only when tab bar is hidden -->
+    <div id="tab-dropdown-btn" class="hidden">
+      <span class="tab-dropdown-title">Untitled</span>
+      <span class="tab-dropdown-arrow">▾</span>
+    </div>
+    <div id="tab-dropdown-list"></div>
+  </div>
+
+  <div id="app-layout">
+    <!-- Main area -->
+    <div id="main-area">
+      <!-- Formatting toolbar (persistent, above tabs like Word) -->
+      <div id="format-bar" class="format-bar">
+        <select id="bubble-font-family" title="Font">
+          <option value="KaTeX_Main" selected>Computer Modern</option>
+          <option value="System UI">System</option>
+          <option value="Georgia">Georgia</option>
+          <option value="Times New Roman">Times</option>
+          <option value="Helvetica Neue">Helvetica</option>
+          <option value="Menlo">Menlo</option>
+          <option value="Courier New">Courier</option>
+        </select>
+
+        <select id="bubble-font-size" title="Font Size">
+          <option value="11px" selected>11</option>
+          <option value="12px">12</option>
+          <option value="14px">14</option>
+          <option value="16px">16</option>
+          <option value="18px">18</option>
+          <option value="20px">20</option>
+          <option value="24px">24</option>
+          <option value="28px">28</option>
+          <option value="32px">32</option>
+          <option value="36px">36</option>
+          <option value="48px">48</option>
+        </select>
+
+        <div class="separator"></div>
+
+        <button data-command="bold" title="Bold (⌘B)"><b>B</b></button>
+        <button data-command="italic" title="Italic (⌘I)"><i>I</i></button>
+        <button data-command="underline" title="Underline (⌘U)"><u>U</u></button>
+        <button data-command="highlight" title="Highlight">
+          <span style="background:#fef08a;padding:0 3px;border-radius:2px;">H</span>
+        </button>
+
+        <div class="separator"></div>
+
+        <input type="color" id="bubble-color" title="Text Color" value="#000000" />
+
+        <div class="separator"></div>
+
+        <select id="bubble-line-height" title="Line Spacing">
+          <option value="1.0">1.0×</option>
+          <option value="1.2">1.2×</option>
+          <option value="1.4">1.4×</option>
+          <option value="1.6" selected>1.6×</option>
+          <option value="2.0">2.0×</option>
+          <option value="2.5">2.5×</option>
+        </select>
+
+        <div class="separator"></div>
+
+        <button data-align="left" title="Align Left">⫷</button>
+        <button data-align="center" title="Align Center">⫿</button>
+        <button data-align="right" title="Align Right">⫸</button>
+
+        <div class="separator"></div>
+
+        <button id="math-mode-btn" data-command="mathMode" title="Math Mode (⌘E / ⌃E)">
+          <img src="./merc_snake.png" alt="Math" class="math-mode-icon" />
+        </button>
+      </div>
+
+      <!-- Tab bar -->
+      <div id="tab-bar"></div>
+
+      <!-- Editor -->
+      <div id="editor-container"></div>
+    </div>
+  </div>
+
+  <script type="module" src="./renderer.js"></script>
+</body>
+</html>

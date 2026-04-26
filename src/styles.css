@@ -1,0 +1,1285 @@
+/* === Base Reset === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'KaTeX_Main', 'Times New Roman', 'Computer Modern', serif;
+  background: #fff;
+  color: #1a1a1a;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* === Title Bar === */
+#titlebar {
+  -webkit-app-region: drag;
+  height: 38px;
+  flex-shrink: 0;
+  background: #d6d6d6;
+  border-bottom: 1px solid #c0c0c0;
+  display: flex;
+  align-items: center;
+  padding-left: 80px; /* room for traffic lights */
+  position: relative;
+}
+
+/* Tab dropdown (shown when tab bar is hidden) */
+#tab-dropdown-btn {
+  -webkit-app-region: no-drag;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #444;
+  transition: background 0.15s;
+  user-select: none;
+}
+
+#tab-dropdown-btn:hover { background: rgba(0,0,0,0.07); }
+#tab-dropdown-btn.hidden { display: none; }
+
+.tab-dropdown-title {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tab-dropdown-arrow {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+#tab-dropdown-list {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 76px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.14);
+  z-index: 3000;
+  min-width: 180px;
+  padding: 4px;
+  display: none;
+}
+
+#tab-dropdown-list.open { display: block; }
+
+.tab-dropdown-item {
+  padding: 7px 12px;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab-dropdown-item:hover { background: #f0f0f0; }
+.tab-dropdown-item.active { font-weight: 600; color: #000; }
+.tab-dropdown-item.new { color: #666; border-top: 1px solid #eee; margin-top: 2px; }
+
+/* === App Layout === */
+#app-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+
+/* === Main Area === */
+#main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* === Tab Bar === */
+#tab-bar {
+  display: flex;
+  align-items: center;
+  height: 34px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: #d0d0d0;
+  border-bottom: 1px solid #b8b8b8;
+  padding: 0 8px;
+  flex-shrink: 0;
+  overflow-x: auto;
+  gap: 2px;
+}
+
+#tab-bar.hidden { display: none; }
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  font-size: 12px;
+  color: #666;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+  user-select: none;
+}
+
+.tab:hover { background: #e0e0e0; }
+
+.tab.active {
+  background: #fff;
+  color: #1a1a1a;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.tab-title {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab-title-input {
+  border: 1px solid #c0c8e0;
+  border-radius: 3px;
+  padding: 1px 4px;
+  font-size: 12px;
+  width: 120px;
+  outline: none;
+  font-family: inherit;
+}
+
+.tab-close {
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.15s;
+  border-radius: 4px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab:hover .tab-close { opacity: 0.6; }
+.tab-close:hover { opacity: 1 !important; background: rgba(0,0,0,0.1); }
+
+.tab.new-tab {
+  font-size: 16px;
+  color: #999;
+  padding: 4px 10px;
+}
+
+/* === Editor === */
+#editor-container {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.editor-instance { min-height: 100%; }
+
+.editor-instance .tiptap {
+  outline: none;
+  padding: 24px 24px;
+  min-height: calc(100vh - 72px);
+  font-size: 15px;
+  line-height: 1.6;
+  caret-color: #0066ff;
+  tab-size: 4;
+  -moz-tab-size: 4;
+}
+.editor-instance .tiptap p,
+.editor-instance .tiptap h1,
+.editor-instance .tiptap h2,
+.editor-instance .tiptap h3,
+.editor-instance .tiptap h4 {
+  white-space: pre-wrap;
+}
+
+.editor-instance .tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #bbb;
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
+}
+
+/* Headings */
+.editor-instance .tiptap h1 { font-size: 2em; font-weight: 700; margin: 0.8em 0 0.4em; }
+.editor-instance .tiptap h2 { font-size: 1.5em; font-weight: 600; margin: 0.7em 0 0.3em; }
+.editor-instance .tiptap h3 { font-size: 1.2em; font-weight: 600; margin: 0.6em 0 0.25em; }
+.editor-instance .tiptap p { margin: 0.4em 0; }
+
+.editor-instance .tiptap blockquote {
+  border-left: 3px solid #ddd;
+  padding-left: 16px;
+  color: #555;
+  margin: 0.8em 0;
+}
+
+.editor-instance .tiptap code {
+  background: #f4f4f4;
+  border-radius: 3px;
+  padding: 2px 5px;
+  font-size: 0.9em;
+  font-family: 'Menlo', 'Monaco', monospace;
+}
+
+.editor-instance .tiptap pre {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 0.8em 0;
+  overflow-x: auto;
+}
+
+.editor-instance .tiptap pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* === Inline Math === */
+.inline-math {
+  display: inline;
+  cursor: pointer;
+  padding: 0 1px;
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+
+.inline-math:hover { background: #f0f4ff; }
+.inline-math.editing { background: #eef2ff; }
+
+/* === Display Math === */
+.display-math {
+  display: block;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 2px;
+}
+.display-math .katex-display {
+  margin: 0;
+  padding: 2px 0;
+}
+
+.display-math:hover { background: rgba(0,0,0,0.03); }
+.display-math.editing { background: rgba(0,0,0,0.05); }
+
+/* KaTeX overrides */
+.katex { font-size: 1.05em; }
+.display-math .katex { font-size: 1.1em; }
+
+/* === Math Parameter Editor Popup === */
+.math-param-editor {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+  padding: 14px 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  z-index: 2000;
+  min-width: 280px;
+  max-width: 400px;
+  font-size: 13px;
+}
+
+.math-param-header {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.math-param-preview {
+  background: #f8f8fc;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  text-align: center;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.math-param-preview .katex {
+  font-size: 1.2em;
+}
+
+.math-param-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.math-param-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  min-width: 70px;
+  text-align: right;
+}
+
+.math-param-input {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px 8px;
+  font-family: 'Menlo', 'Monaco', monospace;
+  font-size: 12px;
+  outline: none;
+  background: #fff;
+  color: #333;
+  transition: border-color 0.15s;
+}
+
+.math-param-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.1);
+}
+
+.math-param-raw-toggle {
+  display: block;
+  background: none;
+  border: none;
+  color: #6366f1;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 4px 0;
+  margin-top: 4px;
+}
+
+.math-param-raw-toggle:hover {
+  text-decoration: underline;
+}
+
+.math-param-raw {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 6px 8px;
+  font-family: 'Menlo', 'Monaco', monospace;
+  font-size: 12px;
+  outline: none;
+  resize: vertical;
+  margin-top: 4px;
+}
+
+.math-param-raw:focus {
+  border-color: #6366f1;
+}
+
+.math-param-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.math-param-save, .math-param-cancel {
+  border: none;
+  border-radius: 5px;
+  padding: 5px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.math-param-save {
+  background: #6366f1;
+  color: #fff;
+}
+
+.math-param-save:hover { background: #4f46e5; }
+
+.math-param-cancel {
+  background: #f0f0f0;
+  color: #555;
+}
+
+.math-param-cancel:hover { background: #e0e0e0; }
+
+/* === Matrix Grid === */
+.math-matrix-grid {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.math-grid-cell {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px 6px;
+  font-family: 'Menlo', 'Monaco', monospace;
+  font-size: 12px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.15s;
+  min-width: 48px;
+}
+
+.math-grid-cell:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.1);
+}
+
+/* Dimension buttons (+Row, +Col, etc.) */
+.math-dim-buttons {
+  display: flex;
+  gap: 4px;
+  margin: 6px 0;
+  flex-wrap: wrap;
+}
+
+.math-small-btn {
+  border: 1px solid #ddd;
+  background: #f8f8f8;
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  color: #555;
+  transition: background 0.15s;
+}
+
+.math-small-btn:hover {
+  background: #eee;
+  color: #333;
+}
+
+/* === Cases / Aligned Rows === */
+.math-cases-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.math-cases-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.math-cases-row .math-param-input {
+  flex: 1;
+}
+
+.math-row-delete {
+  border: none;
+  background: none;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.math-row-delete:hover {
+  color: #e44;
+  background: #fee;
+}
+
+/* Plain math editor (for non-structured math) */
+.math-param-editor.plain .math-input {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 6px 8px;
+  font-family: 'Menlo', 'Monaco', monospace;
+  font-size: 12px;
+  outline: none;
+  resize: vertical;
+  margin-bottom: 4px;
+}
+
+.math-param-editor.plain .math-input:focus {
+  border-color: #6366f1;
+}
+
+/* === Tables === */
+.editor-instance .tiptap table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0;
+  table-layout: fixed;
+  overflow: hidden;
+}
+
+.editor-instance .tiptap td,
+.editor-instance .tiptap th {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  vertical-align: top;
+  position: relative;
+  min-width: 80px;
+}
+
+.editor-instance .tiptap th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+.editor-instance .tiptap td > *,
+.editor-instance .tiptap th > * {
+  margin: 0;
+}
+
+.editor-instance .tiptap .selectedCell {
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.editor-instance .tiptap .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  cursor: col-resize;
+  background: #6366f1;
+  z-index: 20;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+/* === File Attachments === */
+.file-attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  margin: 4px 0;
+  background: #f5f5f7;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  max-width: 320px;
+  transition: background 0.15s;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+.file-attachment:hover { background: #eaeaec; }
+.file-attachment.ProseMirror-selectednode {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+.fa-icon { font-size: 24px; flex-shrink: 0; }
+.fa-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.fa-name {
+  font-size: 13px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fa-size {
+  font-size: 11px;
+  color: #888;
+}
+.fa-download {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  opacity: 0.5;
+  transition: opacity 0.15s;
+}
+.fa-download:hover { opacity: 1; }
+
+body.dark-mode .file-attachment {
+  background: #2c2c2e;
+  border-color: #3a3a3c;
+}
+body.dark-mode .file-attachment:hover { background: #3a3a3c; }
+body.dark-mode .fa-name { color: #e5e5e7; }
+body.dark-mode .fa-size { color: #636366; }
+body.dark-mode .fa-download { color: #e5e5e7; }
+
+/* === Drawing Node === */
+.drawing-node {
+  position: relative;
+  display: inline-block;
+  margin: 8px 0;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: box-shadow 0.15s;
+}
+.drawing-node:hover {
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+}
+.drawing-node.ProseMirror-selectednode {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+.drawing-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+.drawing-badge {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  font-size: 10px;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+.drawing-node:hover .drawing-badge { opacity: 1; }
+
+/* === Drawing Tool === */
+.drawing-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  background: #f0f0f2;
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+.drawing-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+.drawing-tool-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, border-color 0.12s;
+}
+.drawing-tool-btn:hover { background: #f0f0f2; }
+.drawing-tool-btn.active {
+  background: #e8e8ff;
+  border-color: #6366f1;
+  color: #6366f1;
+}
+.drawing-tool-btn.small { width: 32px; height: 32px; font-size: 14px; }
+.drawing-sep {
+  width: 1px;
+  height: 24px;
+  background: #e0e0e0;
+  margin: 0 4px;
+}
+.drawing-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #666;
+  cursor: pointer;
+}
+.drawing-color {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+}
+.drawing-color::-webkit-color-swatch-wrapper { padding: 2px; }
+.drawing-color::-webkit-color-swatch { border-radius: 4px; border: none; }
+.drawing-slider {
+  width: 80px;
+  height: 4px;
+  cursor: pointer;
+  accent-color: #6366f1;
+}
+.drawing-action-btn {
+  padding: 6px 18px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 4px;
+}
+.drawing-action-btn.cancel { background: #f5f5f5; color: #333; }
+.drawing-action-btn.cancel:hover { background: #e8e8e8; }
+.drawing-action-btn.save { background: #6366f1; color: #fff; border-color: #6366f1; }
+.drawing-action-btn.save:hover { background: #5558e6; }
+.drawing-canvas-wrap {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+.drawing-canvas {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Dark mode drawing */
+body.dark-mode .drawing-overlay { background: #1c1c1e; }
+body.dark-mode .drawing-toolbar { background: #2c2c2e; border-bottom-color: #3a3a3c; }
+body.dark-mode .drawing-tool-btn { color: #e5e5e7; }
+body.dark-mode .drawing-tool-btn:hover { background: #3a3a3c; }
+body.dark-mode .drawing-tool-btn.active { background: #3a3a5c; border-color: #6366f1; color: #a5a7ff; }
+body.dark-mode .drawing-sep { background: #3a3a3c; }
+body.dark-mode .drawing-label { color: #aeaeb2; }
+body.dark-mode .drawing-color { border-color: #3a3a3c; }
+body.dark-mode .drawing-action-btn.cancel { background: #3a3a3c; color: #e5e5e7; border-color: #3a3a3c; }
+body.dark-mode .drawing-canvas { background: #fff; }
+
+/* === Links === */
+.editor-instance .tiptap a {
+  color: #4a6cf7;
+  text-decoration: underline;
+  text-decoration-color: rgba(74, 108, 247, 0.3);
+  text-underline-offset: 2px;
+  cursor: pointer;
+  transition: text-decoration-color 0.15s;
+}
+.editor-instance .tiptap a:hover {
+  text-decoration-color: #4a6cf7;
+}
+body.dark-mode .editor-instance .tiptap a {
+  color: #8ab4f8;
+  text-decoration-color: rgba(138, 180, 248, 0.3);
+}
+body.dark-mode .editor-instance .tiptap a:hover {
+  text-decoration-color: #8ab4f8;
+}
+
+/* === Images === */
+.editor-instance .tiptap img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 8px 0;
+  cursor: pointer;
+}
+.editor-instance .tiptap img.ProseMirror-selectednode {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+/* === Page Setup Dialog === */
+.page-setup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+.page-setup-dialog {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 360px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+}
+.page-setup-dialog h3 {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 600;
+}
+.ps-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.ps-row label { font-size: 13px; color: #555; }
+.ps-row select {
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  background: #fff;
+}
+.ps-margins {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+.ps-margins legend { font-size: 12px; color: #888; padding: 0 4px; }
+.ps-margin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.ps-margin-grid label {
+  font-size: 12px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ps-margin-grid input {
+  width: 60px;
+  padding: 3px 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: center;
+}
+.ps-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.ps-buttons button {
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+  font-size: 13px;
+  cursor: pointer;
+}
+.ps-buttons button#ps-apply {
+  background: #6366f1;
+  color: #fff;
+  border-color: #6366f1;
+}
+
+/* Dark mode page setup */
+body.dark-mode .page-setup-dialog {
+  background: #2c2c2e;
+  color: #e5e5e7;
+}
+body.dark-mode .ps-row label,
+body.dark-mode .ps-margin-grid label { color: #aeaeb2; }
+body.dark-mode .ps-row select,
+body.dark-mode .ps-margin-grid input {
+  background: #1c1c1e;
+  border-color: #3a3a3c;
+  color: #e5e5e7;
+}
+body.dark-mode .ps-margins {
+  border-color: #3a3a3c;
+}
+body.dark-mode .ps-margins legend { color: #636366; }
+body.dark-mode .ps-buttons button {
+  background: #3a3a3c;
+  border-color: #3a3a3c;
+  color: #e5e5e7;
+}
+body.dark-mode .ps-buttons button#ps-apply {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: #fff;
+}
+
+/* === Format Bar (persistent toolbar) === */
+.format-bar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: #e0e0e0;
+  border-bottom: 1px solid #c8c8c8;
+  flex-shrink: 0;
+  min-height: 36px;
+}
+
+.format-bar button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #555;
+  transition: background 0.1s, color 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+}
+
+.format-bar button:hover { background: #e8e8ea; color: #111; }
+.format-bar button.active { background: #e8e8ff; color: #4338ca; }
+
+.format-bar select {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 11px;
+  background: #fff;
+  color: #555;
+  cursor: pointer;
+  height: 28px;
+  outline: none;
+}
+
+.format-bar select:focus { border-color: #6366f1; }
+
+.format-bar input[type="color"] {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+  -webkit-appearance: none;
+}
+
+.format-bar input[type="color"]::-webkit-color-swatch-wrapper { padding: 2px; }
+.format-bar input[type="color"]::-webkit-color-swatch { border: none; border-radius: 2px; }
+
+.separator {
+  width: 1px;
+  height: 20px;
+  background: #e0e0e0;
+  margin: 0 2px;
+}
+
+/* Math mode button icon */
+.math-mode-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+  margin: -3px;
+}
+body.dark-mode .math-mode-icon {
+  filter: invert(1);
+}
+
+/* Math mode indicator — outlined when active, matching bold/italic style */
+#math-mode-btn.active {
+  background: #e8e8ff;
+  color: #4338ca;
+  outline: 2px solid #6366f1;
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+
+/* Math mode typing indicator banner */
+.math-mode-indicator {
+  display: none;
+  background: #fef3c7;
+  border-bottom: 2px solid #f59e0b;
+  padding: 4px 12px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  color: #92400e;
+  text-align: center;
+}
+.math-mode-indicator.visible {
+  display: block;
+}
+.dark-mode .math-mode-indicator {
+  background: #422006;
+  color: #fbbf24;
+  border-bottom-color: #b45309;
+}
+
+/* === Scrollbar === */
+#editor-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+#editor-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#editor-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+#editor-container::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* === Selection === */
+::selection {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+/* === Print / PDF === */
+@media print {
+  #titlebar, #tab-bar, .format-bar, #sidebar,
+  #tab-dropdown-btn, #tab-dropdown-list { display: none !important; }
+
+  /* Remove all fixed-height / overflow constraints so content flows across pages */
+  html, body, #app-layout, #editor-container, .editor-instance, .editor-instance .tiptap {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+    background: #fff !important;
+    color: #000 !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+  .editor-instance .tiptap {
+    padding: 0;
+  }
+  .katex { color: #000 !important; }
+}
+
+/* Applied during PDF export to guarantee light appearance and multi-page flow */
+body.printing, body.printing #app-layout,
+body.printing #editor-container,
+body.printing .editor-instance, body.printing .tiptap {
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  background: #fff !important;
+  color: #000 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ================================================================
+   MANUAL DARK MODE via .dark-mode class
+   ================================================================ */
+body.dark-mode {
+  background: #1c1c1e;
+  color: #e5e5e7;
+}
+
+body.dark-mode #titlebar {
+  background: #2c2c2e;
+  border-bottom-color: #3a3a3c;
+}
+
+body.dark-mode #tab-bar {
+  background: #2c2c2e;
+  border-bottom-color: #3a3a3c;
+}
+
+body.dark-mode .tab { color: #8e8e93; }
+body.dark-mode .tab:hover { background: #3a3a3c; }
+body.dark-mode .tab.active {
+  background: #1c1c1e;
+  color: #e5e5e7;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+body.dark-mode .tab-title-input {
+  background: #3a3a3c;
+  border-color: #636366;
+  color: #e5e5e7;
+}
+
+body.dark-mode #editor-container { background: #000; }
+
+body.dark-mode .editor-instance .tiptap {
+  color: #e5e5e7;
+  caret-color: #6e9fff;
+}
+
+body.dark-mode .editor-instance .tiptap p.is-editor-empty:first-child::before {
+  color: #636366;
+}
+
+body.dark-mode .editor-instance .tiptap blockquote {
+  border-left-color: #636366;
+  color: #aeaeb2;
+}
+
+body.dark-mode .editor-instance .tiptap code {
+  background: #2c2c2e;
+  color: #e5e5e7;
+}
+
+body.dark-mode .editor-instance .tiptap pre {
+  background: #0d0d0f;
+  color: #d4d4d4;
+}
+
+body.dark-mode .editor-instance .tiptap td,
+body.dark-mode .editor-instance .tiptap th {
+  border-color: #3a3a3c;
+}
+
+body.dark-mode .editor-instance .tiptap th {
+  background: #2c2c2e;
+}
+
+body.dark-mode .editor-instance .tiptap .selectedCell {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+body.dark-mode .inline-math:hover { background: rgba(99, 102, 241, 0.15); }
+body.dark-mode .inline-math.editing { background: rgba(99, 102, 241, 0.2); }
+body.dark-mode .display-math:hover { background: rgba(255,255,255,0.04); }
+body.dark-mode .display-math.editing { background: rgba(255,255,255,0.06); }
+
+body.dark-mode .math-param-editor {
+  background: #2c2c2e;
+  border-color: #3a3a3c;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+body.dark-mode .math-param-header { color: #8e8e93; }
+
+body.dark-mode .math-param-preview {
+  background: #1c1c1e;
+}
+
+body.dark-mode .math-param-label { color: #aeaeb2; }
+
+body.dark-mode .math-param-input,
+body.dark-mode .math-grid-cell,
+body.dark-mode .math-param-raw,
+body.dark-mode .math-param-editor.plain .math-input {
+  background: #1c1c1e;
+  border-color: #3a3a3c;
+  color: #e5e5e7;
+}
+
+body.dark-mode .math-param-input:focus,
+body.dark-mode .math-grid-cell:focus,
+body.dark-mode .math-param-raw:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.2);
+}
+
+body.dark-mode .math-small-btn {
+  background: #3a3a3c;
+  border-color: #48484a;
+  color: #aeaeb2;
+}
+
+body.dark-mode .math-small-btn:hover {
+  background: #48484a;
+  color: #e5e5e7;
+}
+
+body.dark-mode .math-row-delete { color: #636366; }
+body.dark-mode .math-row-delete:hover { color: #ff6b6b; background: rgba(255,107,107,0.1); }
+
+body.dark-mode .math-param-save { background: #6366f1; color: #fff; }
+body.dark-mode .math-param-save:hover { background: #5558e6; }
+body.dark-mode .math-param-cancel { background: #3a3a3c; color: #aeaeb2; }
+body.dark-mode .math-param-cancel:hover { background: #48484a; }
+
+body.dark-mode .math-param-raw-toggle { color: #818cf8; }
+
+body.dark-mode .format-bar {
+  background: #2c2c2e;
+  border-bottom-color: #3a3a3c;
+}
+
+body.dark-mode .format-bar button { color: #aeaeb2; }
+body.dark-mode .format-bar button:hover { background: #3a3a3c; color: #e5e5e7; }
+body.dark-mode .format-bar button.active { background: #2d2d5e; color: #818cf8; }
+
+body.dark-mode .format-bar select {
+  background: #1c1c1e;
+  border-color: #3a3a3c;
+  color: #aeaeb2;
+}
+
+body.dark-mode .format-bar input[type="color"] { border-color: #3a3a3c; }
+
+body.dark-mode #math-mode-btn.active {
+  background: #2d2d5e;
+  color: #818cf8;
+  outline: 2px solid #818cf8;
+  outline-offset: -2px;
+}
+
+body.dark-mode .separator { background: #3a3a3c; }
+
+body.dark-mode #editor-container::-webkit-scrollbar-thumb {
+  background: #48484a;
+}
+
+body.dark-mode #editor-container::-webkit-scrollbar-thumb:hover {
+  background: #636366;
+}
+
+body.dark-mode ::selection {
+  background: rgba(99, 102, 241, 0.35);
+}
+
+body.dark-mode .katex { color: #e5e5e7; }
+
+/* In dark mode, override inline text color with the precomputed inverted color */
+body.dark-mode .tiptap [style*="--inv-color"] {
+  color: var(--inv-color) !important;
+}
+/* KaTeX inside colored text should inherit the inverted color */
+body.dark-mode .tiptap [style*="--inv-color"] .katex {
+  color: inherit;
+}
+/* Math nodes that directly have a color mark */
+body.dark-mode .tiptap [data-has-color] .katex {
+  color: var(--inv-color) !important;
+}
+
+body.dark-mode #tab-dropdown-btn { color: #aeaeb2; }
+body.dark-mode #tab-dropdown-btn:hover { background: rgba(255,255,255,0.08); }
+
+body.dark-mode #tab-dropdown-list {
+  background: #2c2c2e;
+  border-color: #3a3a3c;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .tab-dropdown-item { color: #e5e5e7; }
+body.dark-mode .tab-dropdown-item:hover { background: #3a3a3c; }
+body.dark-mode .tab-dropdown-item.active { color: #fff; }
+body.dark-mode .tab-dropdown-item.new { color: #8e8e93; border-top-color: #3a3a3c; }

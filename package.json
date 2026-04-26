@@ -1,0 +1,115 @@
+{
+  "name": "mercury",
+  "version": "1.0.0",
+  "description": "Mercury — minimal math editor with inline LaTeX rendering",
+  "main": "main.js",
+  "author": "Viraj",
+  "scripts": {
+    "build": "vite build",
+    "start": "vite build && electron .",
+    "dev": "vite build && electron .",
+    "package": "vite build && electron-builder --mac",
+    "package:dmg": "vite build && electron-builder --mac dmg"
+  },
+  "build": {
+    "appId": "com.viraj.mercury",
+    "productName": "Mercury",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        "dmg",
+        "dir"
+      ],
+      "icon": "build/icon.png",
+      "extendInfo": {
+        "UTExportedTypeDeclarations": [
+          {
+            "UTTypeIdentifier": "com.viraj.mercury.merc",
+            "UTTypeDescription": "Mercury Document",
+            "UTTypeConformsTo": ["public.data", "public.content"],
+            "UTTypeIconFile": "merc_doc",
+            "UTTypeTagSpecification": {
+              "public.filename-extension": ["merc"]
+            }
+          }
+        ],
+        "CFBundleDocumentTypes": [
+          {
+            "CFBundleTypeName": "Mercury Document",
+            "CFBundleTypeExtensions": [
+              "merc"
+            ],
+            "CFBundleTypeRole": "Editor",
+            "LSHandlerRank": "Owner",
+            "CFBundleTypeIconFile": "merc_doc",
+            "LSItemContentTypes": ["com.viraj.mercury.merc"]
+          },
+          {
+            "CFBundleTypeName": "HTML Document",
+            "CFBundleTypeExtensions": [
+              "html",
+              "htm"
+            ],
+            "CFBundleTypeRole": "Editor",
+            "LSHandlerRank": "Alternate"
+          },
+          {
+            "CFBundleTypeName": "Markdown Document",
+            "CFBundleTypeExtensions": [
+              "md",
+              "markdown"
+            ],
+            "CFBundleTypeRole": "Editor",
+            "LSHandlerRank": "Alternate"
+          },
+          {
+            "CFBundleTypeName": "Text Document",
+            "CFBundleTypeExtensions": [
+              "txt"
+            ],
+            "CFBundleTypeRole": "Editor",
+            "LSHandlerRank": "Alternate"
+          }
+        ]
+      }
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "dist/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "build/merc_doc.icns",
+        "to": "."
+      }
+    ],
+    "directories": {
+      "output": "release"
+    }
+  },
+  "dependencies": {
+    "@tiptap/core": "^2.6.0",
+    "@tiptap/extension-color": "^2.6.0",
+    "@tiptap/extension-font-family": "^2.6.0",
+    "@tiptap/extension-highlight": "^2.6.0",
+    "@tiptap/extension-image": "^2.27.2",
+    "@tiptap/extension-link": "^2.27.2",
+    "@tiptap/extension-placeholder": "^2.6.0",
+    "@tiptap/extension-table": "^2.27.2",
+    "@tiptap/extension-table-cell": "^2.27.2",
+    "@tiptap/extension-table-header": "^2.27.2",
+    "@tiptap/extension-table-row": "^2.27.2",
+    "@tiptap/extension-text-align": "^2.6.0",
+    "@tiptap/extension-text-style": "^2.6.0",
+    "@tiptap/extension-underline": "^2.6.0",
+    "@tiptap/pm": "^2.6.0",
+    "@tiptap/starter-kit": "^2.6.0",
+    "katex": "^0.16.9"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.0",
+    "vite": "^5.4.0"
+  }
+}

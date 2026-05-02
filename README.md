@@ -4,7 +4,7 @@ A minimal, native math editor for macOS with inline LaTeX rendering.
 
 Built with Electron, TipTap, and KaTeX.
 
-![Mercury Editor](build/icon.png)
+<img src="merc_snake.png" width="300">
 
 ## Features
 
